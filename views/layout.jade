@@ -16,15 +16,14 @@ html
             span.icon-bar
           a.brand(href='#') Niagara Trails
           .nav-collapse.collapse
+            - class_name = 'active'
             ul.nav
-              li.active
-                a(href='#') Home
-              li
-                a(href='#about') About
-              li
-                a(href='#contact') Contact
+              li(class="#{(page_name == 'home') ? 'active' : ''}")
+                a(href='/') Home
+              li(class="#{(page_name == 'nearby-trails') ? 'active' : ''}")
+                a(href='/nearby-trails') Nearby Trails
+              li(class="#{(page_name == 'about') ? 'active' : ''}")
+                a(href='/about') About
               .nav-collapse 
     .container
-      h1 Bootstrap starter template
-
       block content
