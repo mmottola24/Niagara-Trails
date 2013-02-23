@@ -1,9 +1,9 @@
-
 /*
- * List all the trails by name
+ * GET nearby trails, returns JSON
  */
 
-exports.index = function(req, res) {
+
+exports.index = function(req, res){
   var Trails = require('../models/trails');
   Trails.fetch(function(err, result) {
     res.contentType('application/json');
