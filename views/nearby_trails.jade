@@ -14,24 +14,29 @@ block content
           , request;
 
         request = $.ajax({
-          url: "/test-trails?lat=" + lat + "&lng=" + lng + "&radius=10",
+          url: "/trails?lat=" + lat + "&lng=" + lng + "&radius=10",
           dataType: 'json',
           success: function(data, textStatus, jqXHR) {
             //console.log(data);   
             var html = '';
             html += '<table class="table table-bordered table-striped">';
 
+            var count = 0;
             for (var i in data) {
+              if (count == 3) {
+                break;
+              }
               html += '<tr>';
-                html += '<td>';
-                html += data[i];
-                html += '</td>';
+                html += '<td>' + i + '</td>';
+                html += '<td>' + data[i][0]['description'] + '</td>';
               html += '</tr>';
+              count++;
             }
 
             html += '</table>';
 
-            $('#location-container').html('<p>Found trials near you: </p>');
+            $('#location-container').html('<p>Found trials near you: </p>' + html);
+            $('#location-container').html(html);
 
           },
           error: function(jqXHR, textStatus, errorThrown) {
