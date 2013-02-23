@@ -8,6 +8,7 @@ var express = require('express')
   , about = require('./routes/about')
   , nearbyTrails = require('./routes/nearby-trails')
   , trails = require('./routes/trails')
+  , nearbyJSON = require('./routes/nearby-json')
   , http = require('http')
   , path = require('path')
   , map = require('./routes/map');
@@ -34,6 +35,7 @@ app.configure('development', function(){
 app.get('/', routes.index);
 app.get('/about', about.index);
 app.get('/nearby-trails', nearbyTrails.index);
+app.get('/nearby-json', nearbyJSON.index);
 app.get('/trails', trails.index);
 app.get('/map', map.list);
 
