@@ -69,7 +69,19 @@ module.exports = {
 			location.description = fullData.description[0];
 		}
 
-		coords = fullData.LineString[0].coordinates;
+		coords = [];
+		for(var i = 0; i < fullData.LineString[0].coordinates.length; i++) {
+			var coordSet = fullData.LineString[0].coordinates[i];
+			coordSet = coordSet.split(' ');
+			for(var j = 0; j < coordSet.length; j++) {
+				if (!coordSet[j].match(/\d+\.\d+/i)) continue;
+				coordSet[j] = coordSet[j].split(',');
+				coords.push({
+					'lat': coordSet[j][0],
+					'lng': coordSet[j][1]
+				});
+			}
+		}
 
 		location.coordinates = coords;
 
