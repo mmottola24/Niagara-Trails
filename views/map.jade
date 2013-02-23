@@ -5,19 +5,57 @@ block content
 	#map_canvas
 
 	script(type="text/javascript"
-        src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false")
+		src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false")
 
 	script(type='text/javascript')
+		
+
+
 		var map;
 		function initialize() {
-		var mapOptions = {
-		zoom: 8,
-		center: new google.maps.LatLng(-34.397, 150.644),
-		mapTypeId: google.maps.MapTypeId.ROADMAP
-		};
-		map = new google.maps.Map(document.getElementById('map_canvas'),
-		mapOptions);
+
+			try {
+
+				var jsonObj = $.getJSON(
+					"./test-trails",
+					function(data) {
+						for (var i in data){
+							for(var j in data[i]){
+								var marker = new google.maps.Marker({
+									position: new google.maps.LatLng(data[i][j].coordinates[0].lat,data[i][j].coordinates[0].lng);,
+									map: map,
+									title:"new"
+								});
+							}	
+							return
+						}
+					}
+				);
+				
+				
+				alert("good json");
+
+			} catch (err) { 
+				alert("bad json");
+			}
+
+			var myLatlng = new google.maps.LatLng(43.0643885,-79.1041945);
+			var mapOptions = {
+				zoom: 10,
+				center: myLatlng,
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			}
+			map = new google.maps.Map(
+				document.getElementById("map_canvas"),
+				mapOptions
+			);
+
+			var marker = new google.maps.Marker({
+				position: myLatlng,
+				map: map,
+				title:"Hello World!"
+			});
 		}
 
 		google.maps.event.addDomListener(window, 'load', initialize);
-	
+
