@@ -5,7 +5,9 @@
 
 var express = require('express')
   , routes = require('./routes')
-  , user = require('./routes/user')
+  , about = require('./routes/about')
+  , nearbyTrails = require('./routes/nearby-trails')
+  , testTrails = require('./routes/test-trails')
   , http = require('http')
   , path = require('path')
   , map = require('./routes/map');
@@ -30,7 +32,9 @@ app.configure('development', function(){
 });
 
 app.get('/', routes.index);
-app.get('/users', user.list);
+app.get('/about', about.index);
+app.get('/nearby-trails', nearbyTrails.index);
+app.get('/test-trails', testTrails.list);
 app.get('/map', map.list);
 
 http.createServer(app).listen(app.get('port'), function(){
