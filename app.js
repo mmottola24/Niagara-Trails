@@ -9,7 +9,8 @@ var express = require('express')
   , nearbyTrails = require('./routes/nearby-trails')
   , testTrails = require('./routes/test-trails')
   , http = require('http')
-  , path = require('path');
+  , path = require('path')
+  , map = require('./routes/map');
 
 var app = express();
 
@@ -34,6 +35,7 @@ app.get('/', routes.index);
 app.get('/about', about.index);
 app.get('/nearby-trails', nearbyTrails.index);
 app.get('/test-trails', testTrails.list);
+app.get('/map', map.list);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
