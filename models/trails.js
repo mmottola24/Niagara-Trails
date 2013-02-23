@@ -1,6 +1,66 @@
 module.exports = {
 
 	apiPath: 'http://niagaraodi.cloudapp.net:8080/v1/Niagara%20Open%20Data/NiagaraTrails/?&format=kml',
+	trails: null,
+
+	getTrails: function(callback) {
+		var trailsObj = this;
+		if (trailsObj.trails !== null) {
+			if (typeof callback === 'function') {
+				callback(null, trailsObj.trails);
+			}
+		} else {
+			trailsObj.fetch(function(err, result) {
+				if (typeof callback === 'function') {
+					if (err) {
+						callback(err, null);
+					} else {
+						trailsObj.trails = result;
+						callback(null, result);
+					}
+				}
+			});
+		}
+	},
+
+	getNearestTrails: function(lat, lng, radius, callback) {
+		var trailsObj = this;
+		trailsObj.getTrails(function(err, trails) {
+			if (err) {
+				if (typeof callback === 'function') callback(err, null);
+				return;
+			}
+
+			var segment, segLat, segLng, segDistance,
+				nearbySegments = [];
+
+			for(var name in trails) {
+				if (!trails.hasOwnProperty(name)) continue;
+
+				for(var i = 0; i < trails[name].length; i++) {
+					segment = trails[name][i];
+
+					for(var j = 0; j < segment.coordinates.length; j++) {
+						segLat = segment.coordinates[j].lat;
+						segLng = segment.coordinates[j].lng;
+						segDistance = trailsObj.getDistance(lat, lng, segLat, segLng);
+
+						if (segDistance < radius) {
+							nearbySegments.push({
+								coordinates: segment,
+								distance: segDistance,
+								trailName: name;
+							});
+						}
+					}
+				}
+			}
+
+			if (typeof callback === 'function') {
+				callback(null, nearbySegments);
+			}
+		});
+	},
 
 	fetch: function(callback) {
 		var xml2js = require('xml2js'),
@@ -86,5 +146,27 @@ module.exports = {
 		location.coordinates = coords;
 
 		return location;
+	},
+
+	getDistance(lat1, lng1, lat2, lng2) {
+		return (
+	        6371 * acos(
+	            cos(
+	                radians(lat1)
+	            ) *
+	            cos(
+	                radians(lat2)
+	            ) *
+	            cos(
+	                radians(lng2) - radians(lng1)
+	            ) +
+	            sin(
+	                radians(lat1)
+	            ) *
+	            sin(
+	                radians(lat2)
+	            )
+	        )
+	    );
 	}
 };
