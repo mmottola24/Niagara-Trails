@@ -49,7 +49,7 @@ module.exports = {
 							nearbySegments.push({
 								coordinates: segment,
 								distance: segDistance,
-								trailName: name;
+								trailName: name
 							});
 						}
 					}
@@ -148,23 +148,27 @@ module.exports = {
 		return location;
 	},
 
-	getDistance(lat1, lng1, lat2, lng2) {
+	getDistance: function(lat1, lng1, lat2, lng2) {
+		var rads = function(num) {
+    		return num * Math.PI / 180;
+		};
+
 		return (
-	        6371 * acos(
-	            cos(
-	                radians(lat1)
+	        6371 * Math.acos(
+	            Math.cos(
+	                rads(lat1)
 	            ) *
-	            cos(
-	                radians(lat2)
+	            Math.cos(
+	                rads(lat2)
 	            ) *
-	            cos(
-	                radians(lng2) - radians(lng1)
+	            Math.cos(
+	                rads(lng2) - rads(lng1)
 	            ) +
-	            sin(
-	                radians(lat1)
+	            Math.sin(
+	                rads(lat1)
 	            ) *
-	            sin(
-	                radians(lat2)
+	            Math.sin(
+	                rads(lat2)
 	            )
 	        )
 	    );
