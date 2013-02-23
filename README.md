@@ -10,4 +10,3 @@ We are using Open Data from the Niagara Region Open Data Catalogue.
 * Michael Mottola
 * Rick Pelletier
 * Ryan C. Spring
-* John Curtis McDonald
