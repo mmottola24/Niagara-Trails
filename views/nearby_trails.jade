@@ -2,4 +2,50 @@ extends layout
 
 block content
   h1= title
-  
+      
+  #location-container
+    p= "Determining Location..."
+        
+  script
+    (function($) {
+      var onSuccessfulPosition = function(location) {
+        var lat = location.coords.latitude
+          , lng = location.coords.longitude
+          , request;
+
+        request = $.ajax({
+          url: "/test-trails",
+          dataType: 'json',
+          success: function(data, textStatus, jqXHR) {
+            //console.log(data);
+
+            $('#location-container').html('<p>Found trials near you: </p>');
+
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            alert('Failed to get Data');
+          },
+          fail:  function(jqXHR, textStatus, errorThrown) {
+            alert('Failed to get Data');
+          }
+        });
+      };
+      
+      var onFailedPosition = function(err) {
+         if(err.code == 1) {
+          // access is denied by user... what a shame
+          alert("Don't worry, be open!");
+        }else if( err.code == 2) {
+          // position is not available
+          alert('Failed to get your location');
+        }
+      }
+    
+      $(document).ready(function() {
+        if (navigator && navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(onSuccessfulPosition, onFailedPosition, {timeout: 10000 });
+        } else {
+          alert('Failed to get your location');
+        }
+      });
+    })($);
