@@ -5,11 +5,10 @@
 
 var express = require('express')
   , routes = require('./routes')
-  , about = require('./routes/about')
-  , nearbyTrails = require('./routes/nearby-trails')
-  , testTrails = require('./routes/test-trails')
+  , user = require('./routes/user')
   , http = require('http')
-  , path = require('path');
+  , path = require('path')
+  , map = require('./routes/map');
 
 var app = express();
 
@@ -31,9 +30,8 @@ app.configure('development', function(){
 });
 
 app.get('/', routes.index);
-app.get('/about', about.index);
-app.get('/nearby-trails', nearbyTrails.index);
-app.get('/test-trails', testTrails.list);
+app.get('/users', user.list);
+app.get('/map', map.list);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
